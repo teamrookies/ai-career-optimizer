@@ -1,10 +1,8 @@
-const API_BASE = "https://ai-career-optimizer.onrender.com";
-// ================= RESUME CREATOR =================
 function generateResume() {
-  const name = document.getElementById("rc-name").value;
-  const skills = document.getElementById("rc-skills").value;
-  const education = document.getElementById("rc-education").value;
-  const projects = document.getElementById("rc-projects").value;
+  const name = document.getElementById("rc-name").value.trim();
+  const skills = document.getElementById("rc-skills").value.trim();
+  const education = document.getElementById("rc-education").value.trim();
+  const projects = document.getElementById("rc-projects").value.trim();
 
   const output = document.getElementById("resumeOutput");
 
@@ -20,10 +18,9 @@ function generateResume() {
     "Projects: " + projects;
 }
 
-// ================= RESUME ENHANCER =================
 function enhanceResume() {
-  const resumeText = document.getElementById("re-text").value;
-  const targetRole = document.getElementById("re-role").value;
+  const resumeText = document.getElementById("re-text").value.trim();
+  const targetRole = document.getElementById("re-role").value.trim();
 
   const output = document.getElementById("enhancedOutput");
 
@@ -34,6 +31,6 @@ function enhanceResume() {
 
   output.innerText =
     "Target Role: " + targetRole + "\n\n" +
-    "Enhanced Resume:\n" +
+    "Enhanced Resume:\n\n" +
     resumeText;
 }
