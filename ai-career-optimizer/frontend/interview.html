@@ -85,7 +85,7 @@ async function submitAnswer() {
     return;
   }
 
-  const res = await fetch("http://localhost:5000/api/interview/answer", {
+  const res = await fetch("https://ai-career-optimizer.onrender.com/api/interview/answer", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -104,4 +104,5 @@ async function submitAnswer() {
 
 </body>
 </html>
+
 
