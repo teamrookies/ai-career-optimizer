@@ -1,7 +1,7 @@
 const API_BASE = "https://ai-career-optimizer.onrender.com";
 
 // ================= RESUME CREATOR =================
-async function generateResume() {
+function generateResume() {
   const name = document.getElementById("rc-name").value.trim();
   const skills = document.getElementById("rc-skills").value.trim();
   const education = document.getElementById("rc-education").value.trim();
@@ -13,22 +13,15 @@ async function generateResume() {
     return;
   }
 
-  try {
-    const res = await fetch(`${API_BASE}/api/resume/create`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, skills, education, projects })
-    });
-
-    const data = await res.json();
-    output.textContent = data.resume || "Resume generated.";
-  } catch (err) {
-    output.textContent = "Server error. Try again.";
-  }
+  output.textContent =
+    "Name: " + name + "\n\n" +
+    "Skills: " + skills + "\n\n" +
+    "Education: " + education + "\n\n" +
+    "Projects: " + projects;
 }
 
 // ================= RESUME ENHANCER =================
-async function enhanceResume() {
+function enhanceResume() {
   const resumeText = document.querySelector("textarea").value.trim();
   const targetRole = document.querySelector("input[placeholder='Target Role']").value.trim();
   const output = document.getElementById("enhancedOutput");
@@ -38,16 +31,8 @@ async function enhanceResume() {
     return;
   }
 
-  try {
-    const res = await fetch(`${API_BASE}/api/resume/enhance`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ resume: resumeText, role: targetRole })
-    });
-
-    const data = await res.json();
-    output.textContent = data.enhanced || "Enhanced resume generated.";
-  } catch (err) {
-    output.textContent = "Server error. Try again.";
-  }
+  output.textContent =
+    "Target Role: " + targetRole + "\n\n" +
+    "Enhanced Resume:\n\n" +
+    resumeText;
 }
