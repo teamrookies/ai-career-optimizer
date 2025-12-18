@@ -4,23 +4,23 @@
   <meta charset="UTF-8" />
   <title>AI Career Optimizer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <h1>AI Career Optimizer</h1>
-    <p>Resume · Interview · Career Growth</p>
-  </header>
-  
- <!-- Resume Creator -->
+<!-- HEADER -->
+<header class="header">
+  <h1>AI Career Optimizer</h1>
+  <p>Resume · Interview · Career Growth</p>
+</header>
+
+<!-- ================= RESUME CREATOR ================= -->
 <section class="card">
   <h2>Resume Creator</h2>
 
   <input id="rc-name" type="text" placeholder="Full Name" />
-  <input id="rc-skills" type="text" placeholder="Skills" />
+  <input id="rc-skills" type="text" placeholder="Skills (comma separated)" />
   <input id="rc-education" type="text" placeholder="Education" />
   <input id="rc-projects" type="text" placeholder="Projects" />
 
@@ -28,44 +28,43 @@
 
   <pre id="resumeOutput"></pre>
 </section>
-  <!-- ================= RESUME ENHANCER ================= -->
-  <section class="card">
-    <h2>Resume Enhancer</h2>
 
-    <textarea
-      placeholder="Paste your resume here"
-      rows="8"
-    ></textarea>
+<!-- ================= RESUME ENHANCER ================= -->
+<section class="card">
+  <h2>Resume Enhancer</h2>
 
-    <input
-      type="text"
-      placeholder="Target Role"
-    />
+  <!-- 🔴 IDs WERE MISSING BEFORE -->
+  <textarea
+    id="re-resume"
+    placeholder="Paste your resume here"
+    rows="8"
+  ></textarea>
 
-    <button onclick="enhanceResume()">Enhance Resume</button>
+  <input
+    id="re-role"
+    type="text"
+    placeholder="Target Role"
+  />
 
-    <pre id="enhancedOutput"></pre>
-  </section>
+  <button onclick="enhanceResume()">Enhance Resume</button>
 
-  <!-- ================= MOCK INTERVIEW (UNCHANGED) ================= -->
-  <section class="card">
-    <h2>Mock Interview</h2>
-    <p>This section is unchanged.</p>
-    <a href="interview.html">
-      <button>Go to Interview</button>
-    </a>
-  </section>
+  <pre id="enhancedOutput"></pre>
+</section>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <span class="brand">
-      Runtime Rookies
-    </span>
-  </footer>
+<!-- ================= MOCK INTERVIEW (UNCHANGED) ================= -->
+<section class="card">
+  <h2>Mock Interview</h2>
+  <p>This section is unchanged.</p>
+  <a href="interview.html">
+    <button>Go to Interview</button>
+  </a>
+</section>
 
-  <script src="app.js"></script>
+<!-- FOOTER -->
+<footer class="footer">
+  <span class="brand">Runtime Rookies</span>
+</footer>
 
+<script src="app.js"></script>
 </body>
 </html>
-
-
