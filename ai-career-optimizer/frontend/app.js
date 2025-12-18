@@ -4,29 +4,23 @@ const API_BASE = "https://ai-career-optimizer.onrender.com";
    RESUME CREATOR (FIXED — NO UNDEFINED)
    ========================================================= */
 async function generateResume() {
-  const name = document.querySelector(
-    'input[placeholder="Full Name"]'
-  )?.value.trim();
+  const inputs = document.querySelectorAll(
+    ".card input"
+  );
 
-  const skills = document.querySelector(
-    'input[placeholder="Skills"]'
-  )?.value.trim();
-
-  const education = document.querySelector(
-    'input[placeholder="Education"]'
-  )?.value.trim();
-
-  const projects = document.querySelector(
-    'input[placeholder="Projects"]'
-  )?.value.trim();
+  const name = inputs[0].value.trim();
+  const skills = inputs[1].value.trim();
+  const education = inputs[2].value.trim();
+  const projects = inputs[3].value.trim();
 
   if (!name || !skills || !education) {
-    alert("Please fill Name, Skills and Education");
+    alert("Fill all fields");
     return;
   }
 
-  try {
-    const res = await fetch(`${API_BASE}/api/resume/create`, {
+  const res = await fetch(
+    "https://ai-career-optimizer.onrender.com/api/resume/create",
+    {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -35,19 +29,14 @@ async function generateResume() {
         education,
         projects
       })
-    });
-
-    const data = await res.json();
-
-    if (!data.resume) {
-      throw new Error("Resume not returned");
     }
+  );
 
-    document.getElementById("resumeOutput").innerText = data.resume;
-  } catch (err) {
-    console.error(err);
-    alert("Resume generation failed");
-  }
+  const data = await res.json();
+
+  // 🔑 PROTECT AGAINST undefined
+  document.getElementById("resumeOutput").innerText =
+    data.resume || "Resume generation failed";
 }
 
 /* =========================================================
@@ -90,3 +79,4 @@ async function enhanceResume() {
     alert("Resume enhancement failed");
   }
 }
+
