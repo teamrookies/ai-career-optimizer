@@ -23,21 +23,24 @@ async function generateResume() {
 }
 
 /* ================= RESUME ENHANCER ================= */
-async function enhanceResume() {
-  const resume = document.getElementById("re-resume").value;
-  const targetRole = document.getElementById("re-role").value;
+async function generateResume() {
+  const name = document.getElementById("rc-name").value.trim();
+  const skills = document.getElementById("rc-skills").value.trim();
+  const education = document.getElementById("rc-education").value.trim();
+  const projects = document.getElementById("rc-projects").value.trim();
 
-  if (!resume || !targetRole) {
-    enhancedOutput.textContent = "Resume and target role required.";
+  if (!name || !skills || !education) {
+    alert("Please fill Name, Skills, and Education");
     return;
   }
 
-  const res = await fetch(`${API}/api/resume/enhance`, {
+  const res = await fetch(${API}/api/resume/create, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ resume, targetRole })
+    body: JSON.stringify({ name, skills, education, projects })
   });
 
   const data = await res.json();
-  enhancedOutput.textContent = data.enhancedResume || data.error;
+  document.getElementById("resumeOutput").textContent =
+    data.resume || "Error generating resume";
 }
