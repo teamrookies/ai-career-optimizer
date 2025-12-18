@@ -1,19 +1,19 @@
 const API_BASE = "https://ai-career-optimizer.onrender.com";
-
 // ================= RESUME CREATOR =================
 function generateResume() {
-  const name = document.getElementById("rc-name").value.trim();
-  const skills = document.getElementById("rc-skills").value.trim();
-  const education = document.getElementById("rc-education").value.trim();
-  const projects = document.getElementById("rc-projects").value.trim();
+  const name = document.getElementById("rc-name").value;
+  const skills = document.getElementById("rc-skills").value;
+  const education = document.getElementById("rc-education").value;
+  const projects = document.getElementById("rc-projects").value;
+
   const output = document.getElementById("resumeOutput");
 
   if (!name || !skills || !education) {
-    output.textContent = "Please fill Name, Skills and Education.";
+    output.innerText = "Please fill Name, Skills and Education.";
     return;
   }
 
-  output.textContent =
+  output.innerText =
     "Name: " + name + "\n\n" +
     "Skills: " + skills + "\n\n" +
     "Education: " + education + "\n\n" +
@@ -22,17 +22,18 @@ function generateResume() {
 
 // ================= RESUME ENHANCER =================
 function enhanceResume() {
-  const resumeText = document.querySelector("textarea").value.trim();
-  const targetRole = document.querySelector("input[placeholder='Target Role']").value.trim();
+  const resumeText = document.getElementById("re-text").value;
+  const targetRole = document.getElementById("re-role").value;
+
   const output = document.getElementById("enhancedOutput");
 
   if (!resumeText || !targetRole) {
-    output.textContent = "Please provide resume text and target role.";
+    output.innerText = "Please provide resume text and target role.";
     return;
   }
 
-  output.textContent =
+  output.innerText =
     "Target Role: " + targetRole + "\n\n" +
-    "Enhanced Resume:\n\n" +
+    "Enhanced Resume:\n" +
     resumeText;
 }
