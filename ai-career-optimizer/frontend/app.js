@@ -1,5 +1,5 @@
 async function createResume() {
-  const res = await fetch("https://ai-career-optimizer.onrender.com//api/resume/create", {
+  const res = await fetch("https://ai-career-optimizer.onrender.com/api/resume/create", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -15,7 +15,7 @@ async function createResume() {
 }
 
 async function enhanceResume() {
-  const res = await fetch("https://ai-career-optimizer.onrender.com//api/resume/enhance", {
+  const res = await fetch("https://ai-career-optimizer.onrender.com/api/resume/enhance", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -32,4 +32,5 @@ const toggleBtn = document.getElementById("themeToggle");
 toggleBtn.onclick = () => {
   document.body.classList.toggle("dark");
 };
+
 
