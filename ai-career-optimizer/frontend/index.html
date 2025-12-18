@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Career Optimizer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>AI Career Optimizer</h1>
+  <p>Resume • Interview • Career Growth</p>
+  <button id="themeToggle">🌙 Toggle Dark Mode</button>
+</header>
+
+<div class="container">
+
+  <!-- Resume Creator -->
+  <section class="card">
+    <h2>Resume Creator</h2>
+    <input id="name" placeholder="Your Name">
+    <input id="skills" placeholder="Skills">
+    <input id="education" placeholder="Education">
+    <input id="projects" placeholder="Projects">
+    <button onclick="createResume()">Generate Resume</button>
+    <pre id="resumeOutput"></pre>
+  </section>
+
+  <!-- Resume Enhancer -->
+  <section class="card">
+    <h2>Resume Enhancer</h2>
+    <textarea id="resumeText" placeholder="Paste your resume here"></textarea>
+    <input id="role" placeholder="Target Role">
+    <button onclick="enhanceResume()">Enhance Resume</button>
+    <pre id="enhancedOutput"></pre>
+  </section>
+
+  <!-- Interview -->
+  <section class="card">
+    <h2>Mock Interview</h2>
+    <p>Practice interviews with AI (voice enabled)</p>
+    <a href="interview.html" target="_blank">
+      <button>Start Interview</button>
+    </a>
+  </section>
+
+</div>
+
+<script src="app.js"></script>
+<footer class="signature">
+  <p>Crafted with innovation by</p>
+  <span>Runtime Rookies</span>
+</footer>
+</body>
+</html>

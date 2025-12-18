@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Voice Interview</title>
+</head>
+<body>
+
+<h2>AI Voice Mock Interview</h2>
+
+<button onclick="startInterview()">Start Interview</button>
+<button onclick="startListening()">Speak Answer</button>
+<button onclick="submitAnswer()">Done</button>
+
+<p><strong>AI Question:</strong></p>
+<p id="question"></p>
+
+<p><strong>Your Answer:</strong></p>
+<p id="answer"></p>
+
+<script>
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+
+recognition.lang = "en-US";
+recognition.interimResults = true;
+recognition.continuous = true;
+
+let currentQuestion = "";
+let spokenAnswer = "";
+let listening = false;
+
+function speak(text) {
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  window.speechSynthesis.speak(utterance);
+}
+
+async function startInterview() {
+  const res = await fetch("http://localhost:5000/api/interview/start", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      role: "Software Engineer",
+      skills: "C, Java, HTML, CSS",
+      difficulty: "Beginner"
+    })
+  });
+
+  const data = await res.json();
+  currentQuestion = data.question;
+  document.getElementById("question").innerText = currentQuestion;
+  speak(currentQuestion);
+}
+
+function startListening() {
+  spokenAnswer = "";
+  listening = true;
+  recognition.start();
+}
+
+recognition.onresult = (event) => {
+  spokenAnswer = Array.from(event.results)
+    .map(result => result[0].transcript)
+    .join(" ");
+
+  document.getElementById("answer").innerText = spokenAnswer;
+};
+
+recognition.onerror = (event) => {
+  console.warn("Speech error:", event.error);
+};
+
+recognition.onend = () => {
+  if (listening) {
+    recognition.start(); // auto-restart
+  }
+};
+
+async function submitAnswer() {
+  listening = false;
+  recognition.stop();
+
+  if (!spokenAnswer.trim()) {
+    alert("No speech detected. Please speak louder and try again.");
+    return;
+  }
+
+  const res = await fetch("http://localhost:5000/api/interview/answer", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      role: "Software Engineer",
+      question: currentQuestion,
+      answer: spokenAnswer
+    })
+  });
+
+  const data = await res.json();
+  document.getElementById("question").innerText = data.evaluation;
+  speak(data.evaluation);
+}
+</script>
+
+
+</body>
+</html>
