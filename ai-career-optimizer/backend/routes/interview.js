@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const groq = require("../services/groq"); // your existing AI service
+const groq = require("../services/groq");
 
+/* ---------- START INTERVIEW ---------- */
 router.post("/start", async (req, res) => {
   const { interviewType } = req.body;
 
@@ -11,7 +12,7 @@ You are a professional interviewer.
 Interview role: ${interviewType}
 
 Rules:
-- Ask ONE interview question
+- Ask ONLY one interview question
 - Medium difficulty
 - No explanation
 - No answers
@@ -25,28 +26,34 @@ Rules:
   }
 });
 
+/* ---------- PROCESS ANSWER ---------- */
 router.post("/answer", async (req, res) => {
   const { interviewType, question, answer } = req.body;
 
   const prompt = `
-You are conducting a ${interviewType}.
+You are conducting a ${interviewType} interview.
 
 Question: ${question}
 Candidate Answer: ${answer}
 
-Give:
-1. Short feedback (2 lines)
-2. Ask the next interview question
+Tasks:
+1. Give short feedback (2 lines)
+2. Ask the NEXT interview question (only the question)
 `;
 
   try {
     const response = await groq.chat(prompt);
-    res.json({ response });
+
+    res.json({
+      feedback: response,
+      nextQuestion: response
+    });
   } catch (err) {
     res.status(500).json({ error: "Answer processing failed" });
   }
 });
 
+/* ---------- FINAL FEEDBACK ---------- */
 router.post("/feedback", async (req, res) => {
   const { interviewType, answers } = req.body;
 
@@ -59,7 +66,7 @@ ${answers.join("\n\n")}
 Give:
 - Strengths
 - Weaknesses
-- Overall score /10
+- Overall score out of 10
 - Improvement tips
 `;
 
