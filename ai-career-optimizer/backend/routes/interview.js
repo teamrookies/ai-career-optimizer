@@ -1,63 +1,73 @@
 const express = require("express");
-const askGroq = require("../services/groq");
-
 const router = express.Router();
+const groq = require("../services/groq"); // your existing AI service
 
-// Start interview: generate first question
 router.post("/start", async (req, res) => {
-  const { role, skills, difficulty } = req.body;
+  const { interviewType } = req.body;
 
   const prompt = `
-You are an interview AI.
-Role: ${role}
-Skills: ${skills}
-Difficulty: ${difficulty}
+You are a professional interviewer.
 
-Ask ONE interview question only.
-Do not give answers.
+Interview role: ${interviewType}
+
+Rules:
+- Ask ONE interview question
+- Medium difficulty
+- No explanation
+- No answers
 `;
 
   try {
-    const question = await askGroq(prompt);
+    const question = await groq.chat(prompt);
     res.json({ question });
-  } catch (error) {
-    res.status(500).json({
-      error: "Interview start failed",
-      details: error.response?.data || error.message
-    });
+  } catch (err) {
+    res.status(500).json({ error: "Interview start failed" });
   }
 });
 
-// Evaluate answer and ask next question
 router.post("/answer", async (req, res) => {
-  const { role, question, answer } = req.body;
+  const { interviewType, question, answer } = req.body;
 
   const prompt = `
-You are an interview evaluator.
+You are conducting a ${interviewType}.
 
-Role: ${role}
 Question: ${question}
 Candidate Answer: ${answer}
 
-Tasks:
-1. Give brief feedback
-2. Give score out of 10
-3. Ask NEXT interview question (one only)
-
-Format:
-Feedback:
-Score:
-Next Question:
+Give:
+1. Short feedback (2 lines)
+2. Ask the next interview question
 `;
 
   try {
-    const evaluation = await askGroq(prompt);
-    res.json({ evaluation });
-  } catch (error) {
-    res.status(500).json({
-      error: "Answer evaluation failed",
-      details: error.response?.data || error.message
-    });
+    const response = await groq.chat(prompt);
+    res.json({ response });
+  } catch (err) {
+    res.status(500).json({ error: "Answer processing failed" });
+  }
+});
+
+router.post("/feedback", async (req, res) => {
+  const { interviewType, answers } = req.body;
+
+  const prompt = `
+You are an interviewer for ${interviewType}.
+
+Candidate answers:
+${answers.join("\n\n")}
+
+Give:
+- Strengths
+- Weaknesses
+- Overall score /10
+- Improvement tips
+`;
+
+  try {
+    const feedback = await groq.chat(prompt);
+    res.json({ feedback });
+  } catch (err) {
+    res.status(500).json({ error: "Feedback generation failed" });
   }
 });
 
