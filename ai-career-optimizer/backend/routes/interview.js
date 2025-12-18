@@ -2,11 +2,18 @@ const express = require("express");
 const router = express.Router();
 const groq = require("../services/groq");
 
-/* ---------- START INTERVIEW ---------- */
+/* ===============================
+   START INTERVIEW
+   =============================== */
 router.post("/start", async (req, res) => {
-  const { interviewType } = req.body;
+  try {
+    const { interviewType } = req.body;
 
-  const prompt = `
+    if (!interviewType) {
+      return res.status(400).json({ error: "Interview type is required" });
+    }
+
+    const prompt = `
 You are a professional interviewer.
 
 Interview role: ${interviewType}
@@ -18,46 +25,66 @@ Rules:
 - No answers
 `;
 
-  try {
     const question = await groq.chat(prompt);
-    res.json({ question });
-  } catch (err) {
+
+    res.json({
+      question: question.trim()
+    });
+  } catch (error) {
+    console.error("Interview start error:", error);
     res.status(500).json({ error: "Interview start failed" });
   }
 });
 
-/* ---------- PROCESS ANSWER ---------- */
+/* ===============================
+   PROCESS ANSWER & NEXT QUESTION
+   =============================== */
 router.post("/answer", async (req, res) => {
-  const { interviewType, question, answer } = req.body;
+  try {
+    const { interviewType, question, answer } = req.body;
 
-  const prompt = `
+    if (!interviewType || !question || !answer) {
+      return res.status(400).json({ error: "Missing interview data" });
+    }
+
+    const prompt = `
 You are conducting a ${interviewType} interview.
 
-Question: ${question}
-Candidate Answer: ${answer}
+Previous Question:
+${question}
+
+Candidate Answer:
+${answer}
 
 Tasks:
 1. Give short feedback (2 lines)
-2. Ask the NEXT interview question (only the question)
+2. Ask the NEXT interview question ONLY
 `;
 
-  try {
-    const response = await groq.chat(prompt);
+    const aiResponse = await groq.chat(prompt);
 
     res.json({
-      feedback: response,
-      nextQuestion: response
+      feedback: aiResponse.trim(),
+      nextQuestion: aiResponse.trim()
     });
-  } catch (err) {
+  } catch (error) {
+    console.error("Interview answer error:", error);
     res.status(500).json({ error: "Answer processing failed" });
   }
 });
 
-/* ---------- FINAL FEEDBACK ---------- */
+/* ===============================
+   FINAL FEEDBACK
+   =============================== */
 router.post("/feedback", async (req, res) => {
-  const { interviewType, answers } = req.body;
+  try {
+    const { interviewType, answers } = req.body;
 
-  const prompt = `
+    if (!interviewType || !answers || answers.length === 0) {
+      return res.status(400).json({ error: "Interview data missing" });
+    }
+
+    const prompt = `
 You are an interviewer for ${interviewType}.
 
 Candidate answers:
@@ -70,10 +97,13 @@ Give:
 - Improvement tips
 `;
 
-  try {
     const feedback = await groq.chat(prompt);
-    res.json({ feedback });
-  } catch (err) {
+
+    res.json({
+      feedback: feedback.trim()
+    });
+  } catch (error) {
+    console.error("Final feedback error:", error);
     res.status(500).json({ error: "Feedback generation failed" });
   }
 });
