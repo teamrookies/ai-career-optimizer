@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AI Voice Mock Interview</title>
+  <title>AI Mock Interview</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -18,6 +18,7 @@
   <br><br>
 
   <button onclick="startInterview()">Start Interview</button>
+  <button onclick="startVoiceInput()">🎤 Speak Answer</button>
   <button onclick="submitAnswer()">Submit Answer</button>
   <button onclick="finishInterview()">Done</button>
 
@@ -35,7 +36,29 @@
 
     let currentQuestion = "";
     let allAnswers = [];
+    let recognition;
 
+    /* ---------- AI VOICE OUTPUT ---------- */
+    function speakAI(text) {
+      if (!text) return;
+      const speech = new SpeechSynthesisUtterance(text);
+      speech.lang = "en-US";
+      window.speechSynthesis.speak(speech);
+    }
+
+    /* ---------- USER VOICE INPUT ---------- */
+    function startVoiceInput() {
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "en-US";
+      recognition.start();
+
+      recognition.onresult = function (event) {
+        document.getElementById("answer").value =
+          event.results[0][0].transcript;
+      };
+    }
+
+    /* ---------- START INTERVIEW ---------- */
     function startInterview() {
       const interviewType = document.getElementById("interviewType").value;
 
@@ -48,9 +71,11 @@
       .then(data => {
         currentQuestion = data.question;
         document.getElementById("question").innerText = data.question;
+        speakAI(data.question);
       });
     }
 
+    /* ---------- SUBMIT ANSWER ---------- */
     function submitAnswer() {
       const interviewType = document.getElementById("interviewType").value;
       const answer = document.getElementById("answer").value;
@@ -68,11 +93,15 @@
       })
       .then(res => res.json())
       .then(data => {
-        document.getElementById("feedback").innerText = data.response;
-        currentQuestion = data.nextQuestion || "";
+        document.getElementById("feedback").innerText = data.feedback;
+        document.getElementById("question").innerText = data.nextQuestion;
+        currentQuestion = data.nextQuestion;
+        speakAI(data.nextQuestion);
+        document.getElementById("answer").value = "";
       });
     }
 
+    /* ---------- FINAL FEEDBACK ---------- */
     function finishInterview() {
       const interviewType = document.getElementById("interviewType").value;
 
@@ -87,6 +116,7 @@
       .then(res => res.json())
       .then(data => {
         document.getElementById("feedback").innerText = data.feedback;
+        speakAI(data.feedback);
       });
     }
   </script>
