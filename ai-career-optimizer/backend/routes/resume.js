@@ -1,36 +1,67 @@
 const express = require("express");
-const askGroq = require("../services/groq");
-
 const router = express.Router();
 
-router.post("/create", async (req, res) => {
-  const { name, skills, education, projects } = req.body;
+router.post("/create", (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      phone,
+      objective,
+      education,
+      skills,
+      experience,
+      projects,
+      certifications
+    } = req.body;
 
-  const prompt = `
-Create a professional, ATS-friendly resume.
+    if (!name || !education || !skills) {
+      return res.status(400).json({ error: "Required fields missing" });
+    }
 
-Name: ${name}
-Skills: ${skills}
-Education: ${education}
-Projects: ${projects}
+    const resume = `
+${name.toUpperCase()}
+${email || ""} | ${phone || ""}
 
-Rules:
-- Use clear headings
-- Use bullet points
-- Keep it concise
-- No emojis
-- Professional tone
+==============================
+CAREER OBJECTIVE
+==============================
+${objective || "Seeking an opportunity to apply my skills and grow professionally."}
+
+==============================
+EDUCATION
+==============================
+${education}
+
+==============================
+SKILLS
+==============================
+${skills}
+
+==============================
+EXPERIENCE
+==============================
+${experience || "Fresher / No prior experience"}
+
+==============================
+PROJECTS
+==============================
+${projects || "No projects provided"}
+
+==============================
+CERTIFICATIONS
+==============================
+${certifications || "None"}
+
+==============================
+DECLARATION
+==============================
+I hereby declare that the above information is true to the best of my knowledge.
 `;
 
-  try {
-    const resume = await askGroq(prompt);
     res.json({ resume });
-  } catch (error) {
-    console.error("GROQ ERROR:", error.response?.data || error.message);
-    res.status(500).json({
-      error: "Resume generation failed",
-      details: error.response?.data || error.message
-    });
+  } catch (err) {
+    res.status(500).json({ error: "Resume generation failed" });
   }
 });
 
