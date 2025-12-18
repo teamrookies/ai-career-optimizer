@@ -1,65 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
   <title>AI Career Optimizer</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<header>
-  <h1>AI Career Optimizer</h1>
-  <p>Resume • Interview • Career Growth</p>
-  <button id="themeToggle">🌙 Toggle Dark Mode</button>
-</header>
+  <!-- HEADER -->
+  <header class="header">
+    <h1>AI Career Optimizer</h1>
+    <p>Resume · Interview · Career Growth</p>
+  </header>
 
-<div class="container">
-
-  <!-- ✅ INTERACTIVE RESUME CREATOR (UPDATED ONLY THIS) -->
+  <!-- ================= RESUME CREATOR ================= -->
   <section class="card">
-    <h2>Resume Creator (Interactive)</h2>
+    <h2>Resume Creator</h2>
 
-    <p id="questionBox">Click start to build your resume step by step</p>
+    <input type="text" placeholder="Full Name" />
+    <input type="text" placeholder="Skills" />
+    <input type="text" placeholder="Education" />
+    <input type="text" placeholder="Projects" />
 
-    <input
-      type="text"
-      id="answerInput"
-      placeholder="Type your answer here"
-    >
-
-    <div style="margin-top:10px;">
-      <button onclick="submitAnswer()" id="submitBtn">Next</button>
-      <button onclick="startResumeWizard()">Start Resume Builder</button>
-    </div>
+    <button onclick="generateResume()">Generate Resume</button>
 
     <pre id="resumeOutput"></pre>
   </section>
 
-  <!-- ❌ UNCHANGED: Resume Enhancer -->
+  <!-- ================= RESUME ENHANCER ================= -->
   <section class="card">
     <h2>Resume Enhancer</h2>
-    <textarea id="resumeText" placeholder="Paste your resume here"></textarea>
-    <input id="role" placeholder="Target Role">
+
+    <textarea
+      placeholder="Paste your resume here"
+      rows="8"
+    ></textarea>
+
+    <input
+      type="text"
+      placeholder="Target Role"
+    />
+
     <button onclick="enhanceResume()">Enhance Resume</button>
+
     <pre id="enhancedOutput"></pre>
   </section>
 
-  <!-- ❌ UNCHANGED: Interview -->
+  <!-- ================= MOCK INTERVIEW (UNCHANGED) ================= -->
   <section class="card">
     <h2>Mock Interview</h2>
-    <p>Practice interviews with AI (voice enabled)</p>
-    <a href="interview.html" target="_blank">
-      <button>Start Interview</button>
+    <p>This section is unchanged.</p>
+    <a href="interview.html">
+      <button>Go to Interview</button>
     </a>
   </section>
 
-</div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <span class="brand">
+      Runtime Rookies
+    </span>
+  </footer>
 
-<script src="app.js"></script>
-
-<footer class="signature">
-  <p>Crafted with innovation by</p>
-  <span>Runtime Rookies</span>
-</footer>
+  <script src="app.js"></script>
 
 </body>
 </html>
+
