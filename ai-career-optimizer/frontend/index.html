@@ -14,18 +14,27 @@
 
 <div class="container">
 
-  <!-- Resume Creator -->
+  <!-- ✅ INTERACTIVE RESUME CREATOR (UPDATED ONLY THIS) -->
   <section class="card">
-    <h2>Resume Creator</h2>
-    <input id="name" placeholder="Your Name">
-    <input id="skills" placeholder="Skills">
-    <input id="education" placeholder="Education">
-    <input id="projects" placeholder="Projects">
-    <button onclick="createResume()">Generate Resume</button>
+    <h2>Resume Creator (Interactive)</h2>
+
+    <p id="questionBox">Click start to build your resume step by step</p>
+
+    <input
+      type="text"
+      id="answerInput"
+      placeholder="Type your answer here"
+    >
+
+    <div style="margin-top:10px;">
+      <button onclick="submitAnswer()" id="submitBtn">Next</button>
+      <button onclick="startResumeWizard()">Start Resume Builder</button>
+    </div>
+
     <pre id="resumeOutput"></pre>
   </section>
 
-  <!-- Resume Enhancer -->
+  <!-- ❌ UNCHANGED: Resume Enhancer -->
   <section class="card">
     <h2>Resume Enhancer</h2>
     <textarea id="resumeText" placeholder="Paste your resume here"></textarea>
@@ -34,7 +43,7 @@
     <pre id="enhancedOutput"></pre>
   </section>
 
-  <!-- Interview -->
+  <!-- ❌ UNCHANGED: Interview -->
   <section class="card">
     <h2>Mock Interview</h2>
     <p>Practice interviews with AI (voice enabled)</p>
@@ -46,9 +55,11 @@
 </div>
 
 <script src="app.js"></script>
+
 <footer class="signature">
   <p>Crafted with innovation by</p>
   <span>Runtime Rookies</span>
 </footer>
+
 </body>
 </html>
